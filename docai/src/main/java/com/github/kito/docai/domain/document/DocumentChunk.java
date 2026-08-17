@@ -27,7 +27,7 @@ public class DocumentChunk {
     @Column(columnDefinition = "TEXT")
     private String chunkText;
 
-    @Column(columnDefinition = "vector(1536") //text-embedding-3-small size
+    @Column(columnDefinition = "vector(1536)") //text-embedding-3-small size
     private PGvector embedding;
 
     public DocumentChunk() {}

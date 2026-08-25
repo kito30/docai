@@ -6,28 +6,38 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.github.kito.docai.services.EmbeddingService;
 import com.github.kito.docai.services.PdfChunkingService;
 import com.github.kito.docai.services.PdfExtractionService;
+import com.pgvector.PGvector;
 
 @RestController
 @RequestMapping("/documents")
 public class DocumentController {
     
-    @Autowired
-    private DocumentRepository documentRepository;
-    @Autowired
-    private DocumentChunkRepository documentChunkRepository;
-    @Autowired
-    private PdfExtractionService pdfExtractionService;
-    @Autowired
-    private PdfChunkingService pdfChunkingService;
+    private final DocumentRepository documentRepository;
+    private final DocumentChunkRepository documentChunkRepository;
+    private final PdfExtractionService pdfExtractionService;
+    private final PdfChunkingService pdfChunkingService;
+    private final EmbeddingService embeddingService;
     
-    private final String uploadDir = "/uploads"; // Directory to store uploaded files
+    private final String uploadDir = "uploads"; // Directory to store uploaded files
 
+    public DocumentController(
+            DocumentRepository documentRepository,
+            DocumentChunkRepository documentChunkRepository,
+            PdfExtractionService pdfExtractionService,
+            PdfChunkingService pdfChunkingService,
+            EmbeddingService embeddingService) {
+        this.documentRepository = documentRepository;
+        this.documentChunkRepository = documentChunkRepository;
+        this.pdfExtractionService = pdfExtractionService;
+        this.pdfChunkingService = pdfChunkingService;
+        this.embeddingService = embeddingService;
+    }
    
     @PostMapping
     public Document uploadDocument(@RequestParam("file") MultipartFile inputFile) throws IOException {
@@ -35,7 +45,6 @@ public class DocumentController {
 
         // get the absolute path to save
         Path uploadPath = Paths.get(uploadDir).toAbsolutePath();
-
 
         Files.createDirectories(uploadPath);
         Path filePath = uploadPath.resolve(inputFile.getOriginalFilename());
@@ -53,11 +62,12 @@ public class DocumentController {
 
         for (String chunkText : chunks) {
             DocumentChunk chunk = new DocumentChunk(savedDocument, chunkText);
+            float[] vector = embeddingService.embedVector(chunkText);
+            chunk.setEmbedding(new PGvector(vector));
             documentChunkRepository.save(chunk);
         }
 
         return savedDocument;
-
     }
     @GetMapping()
     public List<Document> getAllDocuments() {

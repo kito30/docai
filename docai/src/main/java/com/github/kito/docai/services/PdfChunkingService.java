@@ -17,12 +17,16 @@ public class PdfChunkingService {
                                         
     public List<String> chunkText(String text) {
         List<String> chunks = new ArrayList<>();
+        if (text == null || text.isBlank()) {
+            return chunks;
+        }
+
         String[] words = text.split("\\s+"); // Split the text into words
 
         int start = 0;
         while (start < words.length) {
             int end = Math.min(start + CHUNK_SIZE, words.length);
-            String chunk = String.join("", Arrays.asList(words).subList(start, end));
+            String chunk = String.join(" ", Arrays.asList(words).subList(start, end));
             chunks.add(chunk);
 
             if (end == words.length) {

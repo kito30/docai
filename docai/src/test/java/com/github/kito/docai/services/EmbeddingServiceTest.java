@@ -39,8 +39,11 @@ class EmbeddingServiceTest {
         float[] vector = embeddingService.embedVector(sampleText);
 
         assertNotNull(vector, "Embedding vector should not be null");
+        System.out.println("Spring Test: Vector = " + java.util.Arrays.toString(vector));
+        System.out.println("Vector length = " + vector.length);
         assertEquals(1536, vector.length, "Vector dimensionality for gemini-embedding-001 should be 1536");
         assertTrue(vector.length > 0);
+        
 
         System.out.println("--- EMBEDDING TEST RESULT ---");
         System.out.println("Vector dimensionality (length): " + vector.length);

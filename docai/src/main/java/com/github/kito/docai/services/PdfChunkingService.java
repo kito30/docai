@@ -21,7 +21,7 @@ public class PdfChunkingService {
             return chunks;
         }
 
-        String[] words = text.split("\\s+"); // Split the text into words
+        String[] words = text.trim().split("\\s+"); // Split the text into words
 
         int start = 0;
         while (start < words.length) {

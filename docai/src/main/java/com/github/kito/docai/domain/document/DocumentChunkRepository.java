@@ -19,7 +19,7 @@ public interface DocumentChunkRepository extends JpaRepository<DocumentChunk, Lo
         """, nativeQuery = true)
     List<DocumentChunk> findSimilarChunks(@Param("vector") String vector, @Param("topK") int topK);
 
-    // Search within a SPECIFIC document
+    // Search within a SPECIFIC, similar document
     @Query(value = """
         SELECT * FROM document_chunk 
         WHERE document_id = :documentId

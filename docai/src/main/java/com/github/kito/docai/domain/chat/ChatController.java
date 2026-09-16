@@ -8,6 +8,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.github.kito.docai.services.RagService;
 
+/**
+ * REST controller for handling chat interactions.
+ * Provides endpoints for users to ask natural-language questions about their documents.
+ * It delegates the actual RAG (Retrieval-Augmented Generation) logic to the RagService.
+ */
 @RestController
 @RequestMapping("/chat")
 public class ChatController {

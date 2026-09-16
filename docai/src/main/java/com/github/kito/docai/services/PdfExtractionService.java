@@ -8,6 +8,11 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
 import org.springframework.stereotype.Service;
 
+/**
+ * Service for extracting raw text from PDF files.
+ * Currently uses Apache PDFBox to read text from digital PDF documents.
+ * Note: Does not yet support OCR for scanned images/documents.
+ */
 @Service
 public class PdfExtractionService {
     public String extractText(File file) throws IOException {

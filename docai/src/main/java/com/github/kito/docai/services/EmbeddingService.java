@@ -9,6 +9,11 @@ import com.google.genai.types.ContentEmbedding;
 import com.google.genai.types.EmbedContentConfig;
 import com.google.genai.types.EmbedContentResponse;
 
+/**
+ * Service for generating vector embeddings from text.
+ * Uses the Gemini Embedding API (gemini-embedding-001) to convert text into
+ * a mathematical vector representation (float array) suitable for similarity search in pgvector.
+ */
 @Service
 public class EmbeddingService {
 

@@ -11,6 +11,12 @@ import com.google.genai.Client;
 import com.google.genai.types.GenerateContentResponse;
 import com.pgvector.PGvector;
 
+/**
+ * Retrieval-Augmented Generation (RAG) service.
+ * Handles the logic for semantic search: taking a user's question, embedding it,
+ * finding the most similar document chunks in the database using pgvector,
+ * and feeding them to the Gemini LLM to generate an answer based on the context.
+ */
 @Service
 public class RagService {
     private final EmbeddingService embeddingService;

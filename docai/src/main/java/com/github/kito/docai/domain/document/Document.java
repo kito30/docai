@@ -7,6 +7,11 @@ import java.util.List;
 
 import jakarta.persistence.*;
 
+/**
+ * Entity representing an uploaded document in the database.
+ * Holds metadata like filename, upload status, and a one-to-many relationship
+ * with the individual text chunks that this document was split into.
+ */
 @Entity
 public class Document {
     @Id

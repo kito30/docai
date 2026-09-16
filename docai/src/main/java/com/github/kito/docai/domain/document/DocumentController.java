@@ -10,6 +10,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.github.kito.docai.services.DocumentService;
 
+/**
+ * REST controller for managing documents.
+ * Provides endpoints to upload new documents (PDFs), retrieve metadata about existing documents,
+ * and view the individual text chunks that a document was split into.
+ */
 @RestController
 @RequestMapping("/documents")
 public class DocumentController {

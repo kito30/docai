@@ -6,6 +6,12 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+/**
+ * Service for splitting large blocks of text into smaller, overlapping chunks.
+ * Chunking is necessary because LLMs have token limits and vector embeddings 
+ * work better on smaller contexts (like paragraphs) rather than entire documents.
+ * The overlap ensures context isn't lost at the boundaries between chunks.
+ */
 @Service
 public class PdfChunkingService {
     private static final int CHUNK_SIZE = 500; // Number of characters per chunk

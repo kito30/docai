@@ -6,6 +6,11 @@ import org.springframework.stereotype.Service;
 import com.google.genai.Client;
 import io.github.cdimascio.dotenv.Dotenv;
 
+/**
+ * Service responsible for configuring and providing the Gemini API Client.
+ * It looks for the GEMINI_API_KEY in application properties, environment variables,
+ * or a local .env file.
+ */
 @Service
 public class GeminiClientService {
 

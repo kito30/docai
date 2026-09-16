@@ -17,6 +17,11 @@ import com.github.kito.docai.domain.document.DocumentChunkRepository;
 import com.github.kito.docai.domain.document.DocumentRepository;
 import com.pgvector.PGvector;
 
+/**
+ * Core service for handling document ingestion.
+ * It manages the flow of uploading a file, extracting its text, splitting it into chunks,
+ * generating vector embeddings for each chunk via Gemini, and saving everything to the database.
+ */
 @Service
 public class DocumentService {
 

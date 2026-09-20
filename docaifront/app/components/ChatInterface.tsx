@@ -1,3 +1,5 @@
+"use client";
+
 import { Bot, MoreHorizontal } from "lucide-react";
 import TopBar from "./ui/TopBar";
 import ChatInput from "./ui/ChatInput";

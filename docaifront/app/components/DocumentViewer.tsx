@@ -1,3 +1,5 @@
+"use client";
+
 import { ZoomOut, ZoomIn, Download } from "lucide-react";
 import TopBar from "./ui/TopBar";
 import IconButton from "./ui/IconButton";

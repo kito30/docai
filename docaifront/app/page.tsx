@@ -1,3 +1,5 @@
+"use client";
+
 import DocumentSidebar from "./components/DocumentSidebar";
 import ChatInterface from "./components/ChatInterface";
 import DocumentViewer from "./components/DocumentViewer";

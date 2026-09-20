@@ -1,0 +1,35 @@
+@import "tailwindcss";
+
+@theme {
+  /* Colors */
+  --color-surface: #FFF7F9;
+  --color-card: #FFFFFF;
+  --color-primary: #C04B7A;
+  --color-primary-dark: #8A1F4D;
+  --color-primary-light: #F1B7C9;
+  --color-text-main: #6B5C62;
+  --color-border-soft: rgba(241, 183, 201, 0.4);
+  
+  /* Border Radius */
+  --radius-card: 28px;
+  --radius-btn: 24px;
+  
+  /* Shadows */
+  --shadow-cute: 0 16px 40px rgba(192, 75, 122, 0.12);
+}
+
+@layer base {
+  body {
+    /* Apply Tailwind colors directly to the body */
+    @apply bg-surface text-text-main;
+    /* Hard fallback in case Tailwind's cache hasn't updated yet! */
+    background-color: #FFF7F9 !important;
+    font-family: 'Nunito', sans-serif;
+  }
+
+  /* Custom Scrollbar using Tailwind utilities */
+  ::-webkit-scrollbar { width: 8px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { @apply bg-primary-light rounded-full; }
+  ::-webkit-scrollbar-thumb:hover { @apply bg-primary; }
+}

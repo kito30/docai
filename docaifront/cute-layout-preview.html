@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cute Document AI Parser</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Symbols+Rounded" rel="stylesheet">
+  <style>
+    :root {
+      /* Custom User Palette */
+      --surface-bg: #FFF7F9; /* Very Light Pink/White */
+      --card-bg: #FFFFFF;
+      --primary: #C04B7A; /* Medium Pink/Magenta */
+      --primary-dark: #8A1F4D; /* Dark Magenta / Burgundy */
+      --primary-light: #F1B7C9; /* Soft Pink */
+      --text-main: #6B5C62; /* Muted warm grey/brown */
+      
+      --border-soft: rgba(241, 183, 201, 0.4); /* F1B7C9 with opacity for soft lines */
+      --radius-card: 28px;
+      --radius-btn: 24px;
+      --shadow-cute: 0 16px 40px rgba(192, 75, 122, 0.12); /* Shadow tinted with #C04B7A */
+    }
+    
+    * { box-sizing: border-box; }
+    
+    body { 
+      font-family: 'Nunito', sans-serif; 
+      margin: 0; 
+      padding: 32px; 
+      display: flex; 
+      gap: 24px;
+      height: 100vh; 
+      background-color: var(--surface-bg); 
+      color: var(--text-main); 
+    }
+
+    /* Scrollbars */
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--primary-light); border-radius: 10px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--primary); }
+
+    /* The Card Layout */
+    .card {
+      background: var(--card-bg);
+      border-radius: var(--radius-card);
+      box-shadow: var(--shadow-cute);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      border: 3px solid #FFFFFF; 
+    }
+
+    .card-header {
+      padding: 24px 24px 16px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-weight: 800;
+      font-size: 18px;
+      color: var(--primary-dark);
+    }
+    
+    .header-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .header-title .material-symbols-rounded { 
+      font-size: 26px; 
+      color: var(--primary); 
+    }
+
+    /* Left Pane: Documents */
+    .left-pane { width: 300px; flex-shrink: 0; }
+    .doc-list { padding: 12px 16px; overflow-y: auto; flex-grow: 1; display: flex; flex-direction: column; gap: 8px;}
+    .doc-item { 
+      padding: 14px 16px; 
+      display: flex; 
+      align-items: center; 
+      gap: 14px; 
+      cursor: pointer; 
+      border-radius: var(--radius-btn);
+      border: 2px solid transparent;
+      transition: all 0.2s ease;
+    }
+    .doc-item:hover { 
+      background: var(--surface-bg); 
+    }
+    .doc-item.selected { 
+      background: rgba(241, 183, 201, 0.2); /* Very faint primary-light */
+      border: 2px solid var(--primary-light);
+      color: var(--primary-dark); 
+    }
+    .doc-item .material-symbols-rounded { color: var(--text-main); font-size: 24px; opacity: 0.6; transition: 0.2s; }
+    .doc-item.selected .material-symbols-rounded { color: var(--primary); opacity: 1; }
+    .doc-info { display: flex; flex-direction: column; }
+    .doc-name { font-size: 15px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 170px;}
+    .doc-size { font-size: 12px; font-weight: 600; color: var(--text-main); opacity: 0.7; margin-top: 4px; }
+
+    /* Middle Pane: Chat */
+    .middle-pane { flex-grow: 1; min-width: 350px; }
+    .chat-area { flex-grow: 1; padding: 24px; overflow-y: auto; display: flex; flex-direction: column; gap: 24px; }
+    .msg-row { display: flex; gap: 12px; max-width: 85%; }
+    .msg-row.user-row { align-self: flex-end; flex-direction: row-reverse; }
+    
+    .avatar {
+      width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+      color: white; font-weight: 800; font-size: 20px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    }
+    .ai-avatar { background: var(--primary-light); color: var(--primary-dark); }
+    .user-avatar { background: var(--primary); }
+    
+    .msg-bubble {
+      padding: 16px 20px;
+      border-radius: 20px;
+      line-height: 1.6;
+      font-size: 15px;
+      font-weight: 600;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+    }
+    .msg-row.ai-row .msg-bubble { 
+      background: var(--surface-bg); 
+      border: 1px solid var(--border-soft); 
+      border-top-left-radius: 6px;
+      color: var(--text-main);
+    }
+    .msg-row.user-row .msg-bubble { 
+      background: var(--primary); 
+      color: #FFFFFF; 
+      border-top-right-radius: 6px; 
+    }
+    
+    .input-wrapper { padding: 20px 24px; background: var(--card-bg); border-top: 1px dashed var(--border-soft); }
+    .input-box {
+      display: flex; gap: 12px; align-items: center;
+      background: var(--surface-bg);
+      padding: 10px 10px 10px 20px;
+      border-radius: 30px;
+      border: 2px solid transparent;
+      transition: all 0.2s;
+    }
+    .input-box:focus-within { border-color: var(--primary-light); background: #FFF; box-shadow: 0 4px 12px rgba(241, 183, 201, 0.2);}
+    .input-box input { flex-grow: 1; border: none; background: transparent; outline: none; font-size: 16px; font-weight: 600; font-family: inherit; color: var(--primary-dark);}
+    .input-box input::placeholder { color: var(--text-main); opacity: 0.6; }
+    .send-btn { 
+      background: var(--primary); color: #FFF; border: none; 
+      width: 44px; height: 44px; border-radius: 50%; cursor: pointer; 
+      display: flex; justify-content: center; align-items: center;
+      transition: all 0.2s;
+      box-shadow: 0 4px 12px rgba(192, 75, 122, 0.3);
+    }
+    .send-btn:hover { background: var(--primary-dark); transform: scale(1.05); }
+    
+    /* Right Pane: Document Viewer */
+    .right-pane { width: 450px; flex-shrink: 0; background: rgba(241, 183, 201, 0.15); /* Very faint tint of primary-light */ }
+    .doc-toolbar { background: var(--card-bg); padding: 16px 24px; display: flex; justify-content: space-between; align-items: center; border-radius: var(--radius-card) var(--radius-card) 0 0;}
+    .doc-toolbar-actions { display: flex; gap: 16px; color: var(--primary); }
+    .doc-toolbar-actions span { cursor: pointer; font-size: 24px; transition: 0.2s;}
+    .doc-toolbar-actions span:hover { color: var(--primary-dark); transform: scale(1.1); }
+    
+    .pdf-container { padding: 32px; overflow-y: auto; flex-grow: 1; display: flex; justify-content: center; }
+    .pdf-page { 
+      background: #FFFFFF; 
+      padding: 40px; 
+      border-radius: 12px;
+      box-shadow: 0 8px 24px rgba(107, 92, 98, 0.15);
+      font-family: 'Nunito', sans-serif; 
+      font-size: 15px; 
+      line-height: 1.8; 
+      font-weight: 600;
+      color: var(--text-main);
+      width: 100%;
+      max-width: 400px;
+    }
+    .pdf-page h2 { margin-top: 0; font-size: 22px; font-weight: 800; border-bottom: 2px dashed var(--border-soft); padding-bottom: 12px; color: var(--primary-dark); }
+    
+    .highlight { 
+      background-color: var(--primary-light); 
+      color: var(--primary-dark);
+      font-weight: 800; 
+      padding: 2px 6px; 
+      border-radius: 6px; 
+      box-shadow: 0 2px 8px rgba(241, 183, 201, 0.5);
+    }
+    
+  </style>
+</head>
+<body>
+  
+  <!-- Left Pane: Documents -->
+  <div class="card left-pane">
+    <div class="card-header">
+      <div class="header-title">
+        <span class="material-symbols-rounded">folder_special</span>
+        My Files
+      </div>
+      <span class="material-symbols-rounded" style="color:var(--text-main); opacity:0.6; cursor:pointer;">add_circle</span>
+    </div>
+    <div class="doc-list">
+      <div class="doc-item selected">
+        <span class="material-symbols-rounded">auto_stories</span>
+        <div class="doc-info">
+          <span class="doc-name">Annual_Report_2023.pdf</span>
+          <span class="doc-size">2.4 MB • Today</span>
+        </div>
+      </div>
+      <div class="doc-item">
+        <span class="material-symbols-rounded">auto_stories</span>
+        <div class="doc-info">
+          <span class="doc-name">Q1_Financials_Draft.pdf</span>
+          <span class="doc-size">845 KB • Yesterday</span>
+        </div>
+      </div>
+      <div class="doc-item">
+        <span class="material-symbols-rounded">image</span>
+        <div class="doc-info">
+          <span class="doc-name">Org_Chart_New.png</span>
+          <span class="doc-size">1.2 MB • Oct 12</span>
+        </div>
+      </div>
+      <div class="doc-item">
+        <span class="material-symbols-rounded">auto_stories</span>
+        <div class="doc-info">
+          <span class="doc-name">Employee_Handbook.pdf</span>
+          <span class="doc-size">5.6 MB • Sep 28</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Middle Pane: Chat -->
+  <div class="card middle-pane">
+    <div class="card-header">
+      <div class="header-title">
+        <span class="material-symbols-rounded">face_retouching_natural</span>
+        DocAI Helper
+      </div>
+      <span class="material-symbols-rounded" style="color:var(--text-main); opacity:0.6; cursor:pointer;">more_horiz</span>
+    </div>
+    
+    <div class="chat-area">
+      <div class="msg-row user-row">
+        <div class="avatar user-avatar">U</div>
+        <div class="msg-bubble">Can you tell me the total revenue for 2023?</div>
+      </div>
+      
+      <div class="msg-row ai-row">
+        <div class="avatar ai-avatar"><span class="material-symbols-rounded" style="font-size:24px;">auto_awesome</span></div>
+        <div class="msg-bubble">
+          Based on the selected document <strong>"Annual_Report_2023.pdf"</strong>, the total revenue for the year 2023 was <strong>$4.2 million</strong>. <br><br>
+          I've highlighted the exact section where I found this information in the document viewer on the right! Let me know if you need anything else! 🌸
+        </div>
+      </div>
+    </div>
+    
+    <div class="input-wrapper">
+      <div class="input-box">
+        <span class="material-symbols-rounded" style="color:var(--text-main); opacity:0.6; cursor:pointer;">mood</span>
+        <input type="text" placeholder="Ask a question about your documents...">
+        <button class="send-btn"><span class="material-symbols-rounded" style="font-size:24px;">send</span></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Right Pane: Viewer -->
+  <div class="card right-pane">
+    <div class="doc-toolbar">
+      <div style="font-size:15px; font-weight:800; color:var(--primary-dark);">Page 12 of 45</div>
+      <div class="doc-toolbar-actions">
+        <span class="material-symbols-rounded">zoom_out</span>
+        <span class="material-symbols-rounded">zoom_in</span>
+        <span class="material-symbols-rounded">download</span>
+      </div>
+    </div>
+    
+    <div class="pdf-container">
+      <div class="pdf-page">
+        <h2>Financial Overview</h2>
+        <p>This section outlines the financial performance of the company over the past fiscal year, detailing revenues, operating expenses, and net profit margins.</p>
+        <p>Despite market challenges and supply chain disruptions in the second quarter, the company maintained steady growth through diversified investments and aggressive cost-saving measures.</p>
+        <p>The consolidated financial statements indicate that <span class="highlight">the total revenue for the year 2023 reached $4.2 million</span>, marking an 8% increase from the previous year. Operating expenses were strictly held at $2.1 million, allowing for a healthy net margin.</p>
+        <p>Looking forward to 2024, the board expects this upward trajectory to continue...</p>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

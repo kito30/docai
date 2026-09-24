@@ -15,7 +15,6 @@ import com.github.kito.docai.domain.document.Document;
 import com.github.kito.docai.domain.document.DocumentChunk;
 import com.github.kito.docai.domain.document.DocumentChunkRepository;
 import com.github.kito.docai.domain.document.DocumentRepository;
-import com.pgvector.PGvector;
 
 /**
  * Core service for handling document ingestion.
@@ -69,7 +68,7 @@ public class DocumentService {
         for (String chunkText : chunks) {
             float[] vector = embeddingService.embedVector(chunkText);
             DocumentChunk chunk = new DocumentChunk(savedDocument, chunkText);
-            chunk.setEmbedding(new PGvector(vector));
+            chunk.setEmbedding(vector);
             documentChunkRepository.save(chunk);
             savedDocument.addChunk(chunk);
         }

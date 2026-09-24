@@ -4,7 +4,13 @@ import { Bot, MoreHorizontal } from "lucide-react";
 import TopBar from "./ui/TopBar";
 import ChatInput from "./ui/ChatInput";
 
-export default function ChatInterface() {
+import { Document } from "@/lib/types";
+
+interface ChatInterfaceProps {
+  onUploadSuccess?: (doc: Document) => void;
+}
+
+export default function ChatInterface({ onUploadSuccess }: ChatInterfaceProps = {}) {
   return (
     <div className="flex flex-col gap-4 flex-grow min-w-[350px]">
       <TopBar 
@@ -19,7 +25,10 @@ export default function ChatInterface() {
         </div>
         
         <div className="p-5 px-6 border-t border-dashed border-border-soft">
-          <ChatInput placeholder="Ask a question about your documents..." />
+          <ChatInput 
+            placeholder="Ask a question about your documents..." 
+            onUploadSuccess={onUploadSuccess}
+          />
         </div>
       </div>
     </div>

@@ -1,6 +1,7 @@
 package com.github.kito.docai.domain.chat;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,6 +14,7 @@ import com.github.kito.docai.services.RagService;
  * Provides endpoints for users to ask natural-language questions about their documents.
  * It delegates the actual RAG (Retrieval-Augmented Generation) logic to the RagService.
  */
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/chat")
 public class ChatController {

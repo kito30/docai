@@ -15,6 +15,7 @@ import com.github.kito.docai.services.DocumentService;
  * Provides endpoints to upload new documents (PDFs), retrieve metadata about existing documents,
  * and view the individual text chunks that a document was split into.
  */
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/documents")
 public class DocumentController {

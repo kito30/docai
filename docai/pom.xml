@@ -79,6 +79,10 @@
 			<artifactId>dotenv-java</artifactId>
 			<version>3.1.0</version>
 		</dependency>
+		<dependency>
+      	  <groupId>org.hibernate.orm</groupId>
+     	   <artifactId>hibernate-vector</artifactId>
+    	</dependency>
 	</dependencies>
 
 	<build>

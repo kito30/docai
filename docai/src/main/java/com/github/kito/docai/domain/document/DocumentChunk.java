@@ -1,7 +1,6 @@
 package com.github.kito.docai.domain.document;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.pgvector.PGvector;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -11,6 +10,9 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 @Entity
 public class DocumentChunk {
@@ -27,8 +29,9 @@ public class DocumentChunk {
     @Column(columnDefinition = "TEXT")
     private String chunkText;
 
+    @JdbcTypeCode(SqlTypes.VECTOR)
     @Column(columnDefinition = "vector(1536)") //text-embedding-3-small size
-    private PGvector embedding;
+    private float[] embedding;
 
     public DocumentChunk() {}
 
@@ -41,9 +44,9 @@ public class DocumentChunk {
     public String getChunkText() { return chunkText; }
     public Document getDocument() { return document; }
     
-    public PGvector getEmbedding() {return embedding; }
+    public float[] getEmbedding() {return embedding; }
     public Long getDocumentId() {
         return document != null ? document.getId() : null;
     }
-    public void setEmbedding(PGvector embedding) {this.embedding = embedding; }
+    public void setEmbedding(float[] embedding) {this.embedding = embedding; }
 }
